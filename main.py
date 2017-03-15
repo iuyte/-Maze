@@ -1,24 +1,10 @@
 import discord
 import asyncio
+from command import Commands
 
 client = discord.Client()
 
-DISCORD_TOKEN = "MjkxNjU4Nzc0MTM2MDk0NzMy.C6ssDw.j14MlwY7IsQOiOud-77IPbaclF8"
-
-class Commands(object):
-    prefix = ""
-
-    def __init__(self, prefix):
-        self.prefix = prefix
-
-    def ping(self, args):
-        return "pong"
-
-    def pong(self, args):
-        return "ping"
-
-    def respond(self, command, args):
-        return eval("self." + command + "(args)")
+DISCORD_TOKEN = open('../discord_tokens.txt', 'r').read()
 
 commands = Commands("&")
 
