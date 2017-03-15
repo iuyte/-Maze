@@ -5,7 +5,27 @@ client = discord.Client()
 
 DISCORD_TOKEN = "MjkxNjU4Nzc0MTM2MDk0NzMy.C6ssDw.j14MlwY7IsQOiOud-77IPbaclF8"
 
-prefix = "\\"
+class Commands(object):
+    prefix = ""
+
+    def __init__(self, prefix):
+        self.prefix = prefix
+
+    def ping(self, args):
+        return "pong"
+
+    def pong(self, args):
+        return "ping"
+
+    def respond(self, command, args):
+        if command == "ping":
+            return self.ping(args)
+        elif command == "pong":
+            return self.pong(args)
+        else:
+            return "Please use a valid command"
+
+commands = Commands("&")
 
 @client.event
 async def on_ready():
@@ -16,14 +36,11 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.content.startswith(prefix):
-        cont = message.content.split(prefix)[1].split(" ")
+    if message.content.startswith(commands.prefix):
+        cont = message.content.split(commands.prefix)[1].split(" ")
         command = cont[0]
         args = cont[1:len(cont)]
-        response =  "command: ```\n"+command+ "```\nargs: ```\n"
-        for arg in range(len(args)):
-            response += args[arg] + "\n"
-        response += "```"
+        response =  commands.respond(command, args)
         await client.send_message(message.channel, response)
 
 client.run(DISCORD_TOKEN)
