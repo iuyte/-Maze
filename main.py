@@ -1,12 +1,14 @@
 import discord
 import asyncio
-from command import Commands
+import re
+from tools import Maze
 
 client = discord.Client()
 
 DISCORD_TOKEN = open('../discord_tokens.txt', 'r').read()
 
-commands = Commands("&")
+counts = ["kek", "lol", "rekt"]
+maze = Maze("&", counts)
 
 @client.event
 async def on_ready():
@@ -17,11 +19,12 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.content.startswith(commands.prefix):
-        cont = message.content.split(commands.prefix)[1].split(" ")
+    maze.countP(message.content)
+    if message.content.startswith(maze.prefix):
+        cont = message.content.split(maze.prefix)[1].split(" ")
         command = cont[0]
         args = cont[1:len(cont)]
-        response =  commands.respond(command, args)
+        response =  maze.respond(command, args)
         await client.send_message(message.channel, response)
 
 client.run(DISCORD_TOKEN)
