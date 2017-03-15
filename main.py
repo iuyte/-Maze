@@ -1,14 +1,14 @@
 import discord
 import asyncio
 import re
-from tools import Maze
+from tools import Bot
 
 client = discord.Client()
 
 DISCORD_TOKEN = open('../discord_tokens.txt', 'r').read()
 
 counts = ["kek", "lol", "rekt"]
-maze = Maze("&", counts)
+maze = Bot("&", counts)
 
 @client.event
 async def on_ready():

@@ -1,4 +1,4 @@
-class Maze(object):
+class Bot(object):
     prefix = ""
     counters = []
 
