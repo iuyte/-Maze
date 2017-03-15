@@ -1,0 +1,2 @@
+# -Maze
+Discord ;Maze bot
