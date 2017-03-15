@@ -18,12 +18,7 @@ class Commands(object):
         return "ping"
 
     def respond(self, command, args):
-        if command == "ping":
-            return self.ping(args)
-        elif command == "pong":
-            return self.pong(args)
-        else:
-            return "Please use a valid command"
+        return eval("self." + command + "(args)")
 
 commands = Commands("&")
 
