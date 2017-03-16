@@ -1,16 +1,27 @@
+import discord
+import asyncio
+from time import sleep
+
 class Bot(object):
     prefix = ""
     counters = []
+    client = None
+    repost_deleted = None
 
-    def __init__(self, prefix, counters):
+    def __init__(self,  prefix, counters, repost_deleted):
         self.prefix = prefix
         self.counters = counters
+        self.client = discord.Client()
+        self.repost_deleted = repost_deleted
 
-    def ping(self, args):
+    def ping(self, message, args):
         return "pong"
 
-    def pong(self, args):
+    def pong(self, message, args):
         return "ping"
+
+    def yes(self, message):
+        return True
 
     def countP(self, message):
         for i in range(len(self.counters)):
@@ -28,7 +39,7 @@ class Bot(object):
                         writeTo.write(str(newData))
                         writeTo.close()
 
-    def count(self, args):
+    def count(self, message, args):
         readPath = 'db/' + args[0] + '.pydb'
         readFile = open(readPath, 'r')
         readData = readFile.read()
@@ -38,10 +49,33 @@ class Bot(object):
         else:
             return "That has been recorded " + readData + " times."
 
-    def respond(self, command, args):
+    def say(self, message, args):
+        response = ""
+        for arg in range(len(args)):
+            response += " " + args[arg]
+        return response
+
+    def repostDel(self, message):
+        if self.repost_deleted:
+            return message.author.username + " said " + message.content
+        else:
+            return ""
+
+    def respost(self, message, args):
+        if args[0] == "deleted":
+            if self.repost_deleted:
+                self.repost_deleted = False
+                return "Reposting of deleted messages is now ON"
+            else:
+                self.repost_deleted = True
+                return "Reposting of deleted messages is now OFF"
+        else:
+            return "Command not found.\nDid you mean: `&repost deleted`"
+
+    def respond(self, message, command, args):
         response = ""
         try:
-            response = eval("self." + command + "(args)")
+            response = eval("self." + command + "(message, args)")
         except AttributeError:
             response = "Please use a valid command."
         except IndexError:

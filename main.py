@@ -1,30 +1,45 @@
 import discord
 import asyncio
-import re
+from time import sleep
 from tools import Bot
 
-client = discord.Client()
+clent = discord.Client()
 
 DISCORD_TOKEN = open('../discord_tokens.txt', 'r').read()
 
-counts = ["kek", "lol", "rekt"]
-maze = Bot("&", counts)
+counts = ["kek", "lol", "rekt", "lel"]
+maze = Bot( "&", counts, False)
 
-@client.event
+@maze.client.event
 async def on_ready():
     print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
+    print(maze.client.user.name)
+    print(maze.client.user.id)
     print('------')
 
-@client.event
+@maze.client.event
 async def on_message(message):
-    maze.countP(message.content)
-    if message.content.startswith(maze.prefix):
-        cont = message.content.split(maze.prefix)[1].split(" ")
-        command = cont[0]
-        args = cont[1:len(cont)]
-        response =  maze.respond(command, args)
-        await client.send_message(message.channel, response)
+    if message.author.id != "291658774136094732":
+        maze.countP(message.content)
+        if message.content.startswith(maze.prefix):
+            cont = message.content.split(maze.prefix)[1].split(" ")
+            command = cont[0]
+            args = cont[1:len(cont)]
+            if command != "delete":
+                if command == "say":
+                    await maze.client.delete_message(message)
+                response =  maze.respond(message, command, args)
+                await maze.client.send_message(message.channel, response)
+            else:
+                if args[0] != '':
+                    await maze.client.purge_from(channel=message.channel, limit=int(args[0]), check = maze.yes)
+                    await maze.client.send_message(message.channel, args[0] + " messages deleted.")
+                else:
+                    await maze.client.send_message(message.channel, "Please specify a valid number of messages")
 
-client.run(DISCORD_TOKEN)
+@maze.client.event
+async def on_message_delete(message):
+    response = maze.repostDel(message)
+    await maze.client.send_message(message.channel, response)
+
+maze.client.run(DISCORD_TOKEN)
