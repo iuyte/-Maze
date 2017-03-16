@@ -57,18 +57,18 @@ class Bot(object):
 
     def repostDel(self, message):
         if self.repost_deleted:
-            return message.author.username + " said " + message.content
+            return message.author.name + " said " + message.content
         else:
             return ""
 
-    def respost(self, message, args):
+    def repost(self, message, args):
         if args[0] == "deleted":
             if self.repost_deleted:
                 self.repost_deleted = False
-                return "Reposting of deleted messages is now ON"
+                return "Reposting of deleted messages is now OFF"
             else:
                 self.repost_deleted = True
-                return "Reposting of deleted messages is now OFF"
+                return "Reposting of deleted messages is now ON"
         else:
             return "Command not found.\nDid you mean: `&repost deleted`"
 
