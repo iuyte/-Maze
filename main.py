@@ -1,6 +1,7 @@
 import discord
 import asyncio
-from time import sleep
+import time
+from datetime import datetime
 from tools import Bot
 
 clent = discord.Client()
@@ -33,13 +34,13 @@ async def on_message(message):
             else:
                 if args[0] != '':
                     await maze.client.purge_from(channel=message.channel, limit=int(args[0]), check = maze.yes)
-                    await maze.client.send_message(message.channel, args[0] + " messages deleted.")
                 else:
                     await maze.client.send_message(message.channel, "Please specify a valid number of messages")
 
 @maze.client.event
 async def on_message_delete(message):
     response = maze.repostDel(message)
-    await maze.client.send_message(message.channel, response)
+    if maze.repost_deleted:
+        await maze.client.send_message(message.channel, response)
 
 maze.client.run(DISCORD_TOKEN)

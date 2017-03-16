@@ -1,6 +1,7 @@
 import discord
 import asyncio
-from time import sleep
+import time
+from datetime import datetime
 
 class Bot(object):
     prefix = ""
@@ -8,6 +9,7 @@ class Bot(object):
     client = None
     repost_deleted = None
     stop = "NO"
+    lastID = ""
 
     def __init__(self,  prefix, counters, repost_deleted):
         self.prefix = prefix
@@ -79,14 +81,23 @@ class Bot(object):
         s = ""
         for arg in range(len(args)):
             s += " " + args[arg]
-        eval(s)
-        return "Done."
+        if s != "exit()":
+            eval(s)
+            return "Done."
+        else:
+            return "No."
 
     def getx(self, message, args):
         s = ""
         for arg in range(len(args)):
             s += " " + args[arg]
-        return eval(s)
+        if s != "exit()":
+            return eval(s)
+        else:
+            return "No."
+
+    def time(self, message, args):
+         return str(datetime.now())
 
     def respond(self, message, command, args):
         response = ""
