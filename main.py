@@ -7,7 +7,7 @@ clent = discord.Client()
 
 DISCORD_TOKEN = open('../discord_tokens.txt', 'r').read()
 
-counts = ["kek", "lol", "rekt", "lel"]
+counts = ["kek", "lol", "rekt", "lel", "log"]
 maze = Bot( "&", counts, False)
 
 @maze.client.event

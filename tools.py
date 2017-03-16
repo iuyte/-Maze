@@ -7,6 +7,7 @@ class Bot(object):
     counters = []
     client = None
     repost_deleted = None
+    stop = "NO"
 
     def __init__(self,  prefix, counters, repost_deleted):
         self.prefix = prefix
@@ -47,6 +48,8 @@ class Bot(object):
         if readData == '':
             return "That has not been recorded."
         else:
+            if readData[-1] == "\n":
+                readData = readData[0:-1]
             return "That has been recorded " + readData + " times."
 
     def say(self, message, args):
@@ -72,6 +75,19 @@ class Bot(object):
         else:
             return "Command not found.\nDid you mean: `&repost deleted`"
 
+    def ex(self, message, args):
+        s = ""
+        for arg in range(len(args)):
+            s += " " + args[arg]
+        eval(s)
+        return "Done."
+
+    def getx(self, message, args):
+        s = ""
+        for arg in range(len(args)):
+            s += " " + args[arg]
+        return eval(s)
+
     def respond(self, message, command, args):
         response = ""
         try:
@@ -81,7 +97,7 @@ class Bot(object):
         except IndexError:
             response = "Please use a valid argument."
         except TypeError:
-            response = self.prefix
+            response = eval("self." + command)
         except SyntaxError:
             response = "Please use a valid command."
         return response
