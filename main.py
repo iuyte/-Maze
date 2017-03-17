@@ -1,6 +1,6 @@
 import discord
 import asyncio
-import time
+from tinydb import TinyDB, Query
 from datetime import datetime
 from tools import Bot
 
@@ -9,7 +9,7 @@ clent = discord.Client()
 DISCORD_TOKEN = open('../discord_tokens.txt', 'r').read()
 
 counts = ["kek", "lol", "rekt", "lel", "log"]
-maze = Bot( "&", counts, False)
+maze = Bot( "&", counts, False, "db/messageDB.json", "db/permsDB.json")
 
 @maze.client.event
 async def on_ready():
@@ -20,8 +20,8 @@ async def on_ready():
 
 @maze.client.event
 async def on_message(message):
+    maze.record(message)
     if message.author.id != "291658774136094732":
-        maze.countP(message.content)
         if message.content.startswith(maze.prefix):
             cont = message.content.split(maze.prefix)[1].split(" ")
             command = cont[0]
