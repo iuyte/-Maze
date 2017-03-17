@@ -178,20 +178,6 @@ class Bot(object):
             result = result[0:-1]
         return str(result)
 
-    def regex(self, message, args):
-        limit = args[0]
-        key = args[1]
-        for arg in range(2, len(args)):
-            key += " " + args[arg]
-        limit = 0
-        Message = Query()
-        result = self.messageDB.search(Message.content.search(key))
-        if len(result) > limit:
-            result = result[1:(limit + 1)]
-        while len(str(result)) >= 2000:
-            result = result[0:-1]
-        return str(result)
-
     def respond(self, message, command, args):
         response = ""
         try:
