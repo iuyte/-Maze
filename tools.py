@@ -1,25 +1,27 @@
 import discord
 import asyncio
+import calendar
+import time
 from tinydb import TinyDB, Query
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class Bot(object):
     prefix = ""
-    counters = []
     client = None
     repost_deleted = None
     stop = "NO"
     lastID = ""
     messageDB = None
     permsDB = None
+    dqDB = None
 
-    def __init__(self,  prefix, counters, repost_deleted, messageDB, permsDB):
+    def __init__(self,  prefix, repost_deleted, messageDB, permsDB, dqDB):
         self.prefix = prefix
-        self.counters = counters
         self.client = discord.Client()
         self.repost_deleted = repost_deleted
         self.messageDB = TinyDB(messageDB)
         self.permsDB = TinyDB(permsDB)
+        self.dqDB = TinyDB(dqDB)
 
     def backdoorlist(self, id):
         try:
@@ -153,10 +155,44 @@ class Bot(object):
     def record(self, message):
         self.messageDB.insert({'id': message.id, 'server': message.server.id, 'channel': message.channel.id, 'author: ': message.author.id, 'content': message.content, 'time': str(datetime.now())})
 
+    def ship(self, message, args):
+        vowels = 0
+        count = 0
+        vowel2 = 0
+        name1 = args[0]
+        name2 = args[1]
+
+        for character in name1:
+            if character != name1[0]: count = count + 1
+            if character in "aeiouAEIOU": vowels += 1
+            if vowels == 2:
+                vowel2 = count
+                break
+
+        shipPart1 = name1[0:vowel2 + 1]
+
+        consonant = 0
+        count = 0
+        consonant2 = 0
+        consonants = 0
+
+        for consonant in name2:
+            if consonant != name2[0]: count = count + 1
+            if consonant not in "aeiouAEIOU":
+                consonants += 1
+            if consonants == 2:
+                consonant2 = count
+                break
+
+        shipPart2 = name2[consonant2:len(name2)]
+        return shipPart1 + shipPart2
+
     def count(self, message, args):
         key = args[0]
+        for arg in range(1, len(args)):
+            key += " " + args[arg]
         Message = Query()
-        result = self.messageDB.search(Message.content.matches(".*" + key + ".*"))
+        result = self.messageDB.search(Message["content"].search("[^\\&].*(" + key + ").*"))
         end = 0
         for i in range(len(result)):
             if result[i]["server"] == message.server.id:
@@ -164,19 +200,77 @@ class Bot(object):
         return end
 
     def find(self, message, args):
-        key = args[0]
+        key = args[1]
+        for arg in range(2, len(args)):
+            key += " " + args[arg]
         limit = 0
         try:
-            limit = int(args[1])
-        except IndexError:
+            limit = int(args[0])
+        except TypeError:
             limit = 1
         Message = Query()
-        result = self.messageDB.search(Message.content.matches(".*" + key + ".*"))
+        result = self.messageDB.search(Message.content.search("[^\\&].*(" + key + ").*"))
+        for i in range(len(result)):
+            if result[i]["server"] == message.server.id:
+                end += 1
         if len(result) > limit:
             result = result[1:(limit + 1)]
         while len(str(result)) >= 2000:
             result = result[0:-1]
         return str(result)
+
+    def regex(self, message, args):
+        key = args[0]
+        for arg in range(1, len(args)):
+            key += " " + args[arg]
+        Message = Query()
+        result = self.messageDB.search(Message.content.search(key))
+        for i in range(len(result)):
+            if result[i]["server"] != message.server.id:
+                result[i].pop()
+        return str(result)[:2000]
+
+    def parseTime(self, time, length):
+        return {
+            'year' : time[0:3],
+            'month' : time[5:6],
+            'day' : time[8:9],
+            'hour' : time[11:12],
+            'minute' : time[14:15],
+            'second' : time[17:18],
+        }[length]
+
+    def dq(self, userID, serverID, hours):
+        endtime = (hours * 3600) + calendar.timegm(time.gmtime())
+        print("food")
+        self.dqDB.insert({'server' : serverID, 'user' : userID, 'ends' : str(endtime)})
+        print("bard")
+
+    def getdq(self, serverID):
+        Key = Query
+        result1 = self.dqDB.search(Key["server"] == serverID)
+        print(result1)
+        result2 = []
+        for i in range(len(result1)):
+            print(result2)
+            if int(result1[i][ends]) >= calendar.timegm(time.gmtime()):
+                result2.append(result1[i][user])
+                print("foo")
+        #self.dqDB.remove((int(Key["ends"]) >= calendar.timegm(time.gmtime()) and Key["server"] == serverID))
+        return result2
+
+    def help(self, message, args):
+        return self.prefix + """ is the prefix for any commands in use with `;Maze`\n
+                `help`  |  displays this message about usable commands\n
+                `say <message>`  |  causes me to say the message\n
+                `ping`  |  pong\n
+                `pong`  |  ping\n
+                `repost`  |  toggle reposting of deleted messages\n
+                `ex <statement>`  |  execute a statement\n
+                `getx <satatement>`  |  execute a statement and get the result\n
+                `time`  |  get the current EST time\n
+                `count <key>`  |  count the number of times the key has appeared in` ;Maze's` history\n
+        """
 
     def respond(self, message, command, args):
         response = ""
