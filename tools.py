@@ -270,6 +270,7 @@ class Bot(object):
                 `getx <satatement>`  |  execute a statement and get the result\n
                 `time`  |  get the current EST time\n
                 `count <key>`  |  count the number of times the key has appeared in` ;Maze's` history\n
+                `ship <name1> <name2>`  |  creates a ship name for the two users\n
         """
 
     def respond(self, message, command, args):
