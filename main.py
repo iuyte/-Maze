@@ -2,8 +2,11 @@ import discord
 import asyncio
 import calendar
 import time
+import random
 from tinydb import TinyDB, Query
 from datetime import datetime
+from PyDictionary import PyDictionary
+dictionary=PyDictionary()
 from tools import Bot
 
 clent = discord.Client()
@@ -11,7 +14,7 @@ prefix = "&"
 
 DISCORD_TOKEN = open('../discord_tokens.txt', 'r').read()
 
-maze = Bot(prefix, False, "db/messageDB.json", "db/permsDB.json", "db/dq.json")
+maze = Bot(prefix, False, "db/messageDB.json")
 
 @maze.client.event
 async def on_ready():
@@ -25,6 +28,9 @@ async def on_message(message):
     if not message.content.startswith(maze.prefix + "count"):
         maze.record(message)
     if message.author.id != "291658774136094732":
+        if maze.emojonn:
+            print("REACTED")
+            await maze.client.send_message(message.channel, maze.emojo(message))
         if message.content.startswith(maze.prefix):
             cont = message.content.split(maze.prefix)[1].split(" ")
             command = cont[0]
@@ -57,7 +63,10 @@ async def on_message(message):
                     await maze.client.send_message(message.channel, "<@!" + userID + "> dqed.")
                 except:
                     await maze.client.send_message(message.channel, "Please use valid arguments.")
-
+            elif command == "define":
+                key = message.content[7:]
+                result = dictionary.meaning(key)
+                await maze.client.send_message(message.channel, result)
             else:
                 if command == "say":
                     await maze.client.delete_message(message)
