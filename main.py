@@ -12,7 +12,7 @@ from tools import Bot
 clent = discord.Client()
 prefix = "&"
 
-DISCORD_TOKEN = open('../discord_tokens.txt', 'r').read()
+DISCORD_TOKEN = open('../discord_tokens.txt', 'r').read()[:-1]
 
 maze = Bot(prefix, False, "db/messageDB.json")
 

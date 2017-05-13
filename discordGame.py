@@ -6,7 +6,9 @@ from game import data as game
 from datetime import datetime, timedelta
 
 with open('../discord_token.txt', 'r') as discord_file:
-    DISCORD_TOKEN = discord_file.read()[:-1]
+    DISCORD_TOKEN = discord_file.read()[:-2]
+print(DISCORD_TOKEN, end=';')
+
 prefix = ";"
 client = discord.Client()
 game.load()
