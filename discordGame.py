@@ -13,23 +13,25 @@ client = discord.Client()
 db = TinyDB("db/messageDB.json")
 game.load()
 
-def record(message):
-    db.insert({'id': message.id, 'server': message.server.id, 'channel': message.channel.id, 'author: ': message.author.id, 'content': message.content, 'time': str(datetime.now())})
+def record(message, form):
+    db.insert({'type': form, 'id': message.id, 'server': message.server.id, 'channel': message.channel.id, 'author: ': message.author.id, 'content': message.content, 'time': str(datetime.now())})
     servername = message.server.name
     channelname = message.channel.name
     authorname = message.author.name
     print(servername.ljust(15) + " | " + channelname.ljust(15) + "  | " + authorname.ljust(10) + " | " + message.content)
 
 @client.event
-async def on_ready():
+@asyncio.coroutine
+def on_ready():
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
     print('------\n')
 
 @client.event
-async def on_message(message):
-    record(message)
+@asyncio.coroutine
+def on_message(message):
+    record(message, "create")
     content = message.content[1:]
     if message.content[0] == prefix:
         result = ""
@@ -61,14 +63,16 @@ async def on_message(message):
         else:
             result = eval(content)
         if result != None and result != "":
-            await client.send_message(message.channel, result)
+            yield from client.send_message(message.channel, result)
 
 @client.event
-async def on_message_delete(message):
-    record(message)
+@asyncio.coroutine
+def on_message_delete(message):
+    record(message, "delete")
 
 @client.event
-async def on_message_edit(message):
-    record(message)
+@asyncio.coroutine
+def on_message_edit(message):
+    record(message, "edit")
 
 client.run(DISCORD_TOKEN)
