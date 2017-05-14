@@ -1,10 +1,12 @@
 import discord
 import asyncio
 import pickle
-from blink import *
+from gpiozero import LED
+from time import sleep
 from game import *
 from game import data as game
 from datetime import datetime, timedelta
+led = LED(17)
 
 with open('../discord_token.txt', 'r') as discord_file:
     DISCORD_TOKEN = discord_file.read()[:-2]
@@ -54,14 +56,14 @@ def on_message(message):
             else:
                 result = game.users[getUserById(message.author.id)].inventory()
         elif content.startswith("on"):
-            on()
+            led.on()
             result = "LED ON"
         elif content.startswith("off"):
-            on()
+            led.off()
             result = "LED OFF"
         elif content.startswith("blink"):
             led.blink()
-            result = "LED ON"
+            result = "LED BLINKING"
         else:
             result = eval(content)
         if result != None and result != "":
