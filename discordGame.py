@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import pickle
+from blink import *
 from game import *
 from game import data as game
 from datetime import datetime, timedelta
@@ -52,6 +53,15 @@ def on_message(message):
                 result = game.users[content[10:]].inventory()
             else:
                 result = game.users[getUserById(message.author.id)].inventory()
+        elif content.startswith("on"):
+            on()
+            result = "LED ON"
+        elif content.startswith("off"):
+            on()
+            result = "LED OFF"
+        elif content.startswith("blink"):
+            led.blink()
+            result = "LED ON"
         else:
             result = eval(content)
         if result != None and result != "":
