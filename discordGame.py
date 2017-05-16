@@ -47,6 +47,21 @@ def on_message(message):
                     result = eval(value)
             else:
                 result = eval(final)
+        elif content.startswith("item "):
+            newc = content[5:].split(" ")
+            username = newc[0]
+            key = newc[1]
+            value = ""
+            for i in range(2,len(newc)):
+                value += " " + newc[i]
+            final = "game.items" + "['" + username + "']." + key
+            if value != "":
+                final += "=" + value
+                result = exec(final)
+                if result == None or result == "":
+                    result = eval(value)
+            else:
+                result = eval(final)
         elif content.startswith("inventory"):
             response = ""
             if len(content) > 9:
@@ -69,4 +84,3 @@ def on_message(message):
 client.run(DISCORD_TOKEN)
 
 pause()
-
