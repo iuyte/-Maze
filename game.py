@@ -144,12 +144,12 @@ def attack(attacker, attackee, weapon):
     if acc == None:
         acc = 55
     dam = weapon.damage
-    if acc == None:
-        acc = 2.5
-    if random.randint(1, 100) > int(weapon.accuracy):
+    if dam == None:
+        dam = 2.5
+    if random.randint(1, 100) > int(acc):
         return "You missed!"
     try:
-        data.users[attackee].health = float(data.users[attackee].health) - float(weapon.damage)
+        data.users[attackee].health = float(data.users[attackee].health) - float(dam)
     except:
         data.users[attackee].health = data.users[attackee].health
     return attacker + " hit " + attackee + "!\n" + attackee + " health now at " + str(user(attackee).health)
