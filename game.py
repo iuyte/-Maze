@@ -48,11 +48,11 @@ class Item(object):
         stats = \
 """
 ```
-{}:
-{}
-A {}
-Deals {} damage
-Has {}%% accuracy.
+{name}:
+{description}
+A {form}
+Deals {damage} damage
+Has {accuracy}% accuracy.
 ```
 """
         def __init__(self, name, description, form, damage, accuracy):
