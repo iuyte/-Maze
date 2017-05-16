@@ -45,12 +45,23 @@ class Item(object):
             self.script = script
 
     class Weapon(object):
+        stats = \
+"""
+```
+{}:
+{}
+A {}
+Deals {} damage
+Has {}%% accuracy.
+```
+"""
         def __init__(self, name, description, form, damage, accuracy):
             self.name = name
             self.description = description
             self.form = form
             self.damage = damage
             self.accuracy = accuracy
+            self.stats = self.stats.format(name, description, form, damage, accuracy)
 
 def item(key):
     return data.items[key]
