@@ -45,12 +45,23 @@ class Item(object):
             self.script = script
 
     class Weapon(object):
+        stats = \
+"""
+```
+{}:
+{}
+A {}
+Deals {} damage
+Has {}%% accuracy.
+```
+"""
         def __init__(self, name, description, form, damage, accuracy):
             self.name = name
             self.description = description
             self.form = form
             self.damage = damage
             self.accuracy = accuracy
+            self.stats = self.stats.format(name, description, form, damage, accuracy)
 
 def item(key):
     return data.items[key]
@@ -144,8 +155,8 @@ def attack(attacker, attackee, weapon):
     if acc == None:
         acc = 55
     dam = weapon.damage
-    if acc == None:
-        acc = 2.5
+    if dam == None:
+        dam = 2.5
     if random.randint(1, 100) > int(weapon.accuracy):
         return "You missed!"
     try:
