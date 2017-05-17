@@ -56,8 +56,8 @@ class Item(object):
 ```
 {_name}:
 {_description}
-A {_form}
-Deals {_damage} damage
+A {_form} weapon.
+Deals {_damage} damage.
 Has {_accuracy}% accuracy.
 ```
 """.format(_name=name, _description=description, _form=form, _damage=damage, _accuracy=accuracy)
