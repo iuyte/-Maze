@@ -81,7 +81,7 @@ def on_message(message):
             with open("data.txt", mode="w") as ledfdata:
                 ledfdata.write("0")
             result = "LED OFF"
-        else:
+        elif str(message.author.id) == "262949175765762050":
             result = eval(content)
         if result != None and result != "":
             yield from client.send_message(message.channel, result)
