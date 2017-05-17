@@ -35,7 +35,7 @@ def on_message(message):
         elif content.startswith("use "):
             newc = content[4:]
             userr = getUserById(message.author.id)
-            content = "game.users[" + userr + ".use('" + newc + "')"
+            content = "game.users['" + userr + "'].use('" + newc + "')"
             result = eval(content)
         elif content.startswith("user "):
             newc = content[5:].split(" ")
