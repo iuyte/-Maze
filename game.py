@@ -116,7 +116,7 @@ class User(object):
         out += '```'
         return out
 
-    def use(self, ability):
+    def use(self, ability0):
         ability = None
         where = 0
         for item in self.items:

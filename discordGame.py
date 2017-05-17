@@ -32,6 +32,11 @@ def on_message(message):
             newc = content[7:].split(" ")
             content = "attack(" + message.author.id + ", '" + newc[0] + "', '" + newc[2] + "')"
             result = eval(content)
+        elif content.startswith("use "):
+            newc = content[4:]
+            userr = getUserById(message.author.id)
+            content = "game.users[" + userr + ".use('" + newc + "')"
+            result = eval(content)
         elif content.startswith("user "):
             newc = content[5:].split(" ")
             username = newc[0]
