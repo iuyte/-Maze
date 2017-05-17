@@ -61,6 +61,7 @@ Deals {_damage} damage.
 Has {_accuracy}% accuracy.
 ```
 """.format(_name=name, _description=description, _form=form, _damage=damage, _accuracy=accuracy)
+            self.stats = self.stats.format(name, description, form, damage, accuracy)
 
 def item(key):
     return data.items[key]
