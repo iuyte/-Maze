@@ -83,6 +83,8 @@ def on_message(message):
             result = "LED OFF"
         elif str(message.author.id) == "262949175765762050":
             result = eval(content)
+        elif "new" not in content:
+            result = eval(content)
         else:
             result = "No"
         if result != None and result != "":
