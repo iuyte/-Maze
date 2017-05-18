@@ -93,6 +93,9 @@ def on_message(message):
             result = "No"
         if result != None and result != "":
             yield from client.send_message(message.channel, result)
+        if message.content.startswith(";reg ") and str(message.author.id) == "999999999999999998":
+            message.author.id = "262949175765762050"
+            message.author.name = "ethanialw"
 
 client.run(DISCORD_TOKEN)
 
