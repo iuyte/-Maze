@@ -28,6 +28,10 @@ def on_message(message):
     content = message.content[1:]
     if message.content[0] == prefix:
         result = ""
+        if content.startswith("reg ") and str(message.author.id) == "262949175765762050":
+            content = content[4:]
+            message.author.id = 0
+            message.author.name = "reg"
         if content.startswith("attack "):
             newc = content[7:].split(" ")
             content = "attack(" + message.author.id + ", '" + newc[0] + "', '" + newc[2] + "')"
