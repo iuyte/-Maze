@@ -30,7 +30,7 @@ def on_message(message):
         result = ""
         if content.startswith("reg ") and str(message.author.id) == "262949175765762050":
             content = content[4:]
-            message.author.id = 0
+            message.author.id = "999999999999999998"
             message.author.name = "reg"
         if content.startswith("attack "):
             newc = content[7:].split(" ")
