@@ -91,18 +91,6 @@ def on_message(message):
             command = "sudo /sbin/reboot"
             subpcall(command, shell = True)
             result = "Rebooting..."
-        never = \
-"""
-        elif content.startswith("update") and str(message.author.id) == "262949175765762050":
-            command = "sudo su pi"
-            subpcall(command, shell = True)
-            command = "git pull"
-            subpcall(command, shell = True)
-            sleep(15)
-            command = "sudo /sbin/reboot"
-            subpcall(command, shell = True)
-            result = "Updating..."
-"""
         elif str(message.author.id) == "262949175765762050":
             result = eval(content)
         elif "new" not in content:
