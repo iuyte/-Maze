@@ -22,6 +22,8 @@ def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------\n')
+    for server in client.servers:
+        yield from client.send_message(server.channels[0], "Connected")
 
 @client.event
 @asyncio.coroutine
@@ -90,6 +92,15 @@ def on_message(message):
             command = "sudo /sbin/reboot"
             subpcall(command, shell = True)
             result = "Rebooting..."
+        elif content.startswith("update") and str(message.author.id) == "262949175765762050":
+            command = "sudo su pi"
+            subpcall(command, shell = True)
+            command = "git pull"
+            subpcall(command, shell = True)
+            sleep(30)
+            command = "sudo /sbin/reboot"
+            subpcall(command, shell = True)
+            result = "Updating..."
         elif str(message.author.id) == "262949175765762050":
             result = eval(content)
         elif "new" not in content:
