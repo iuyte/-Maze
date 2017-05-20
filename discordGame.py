@@ -80,11 +80,11 @@ def on_message(message):
         elif content.startswith("on") and str(message.author.id) == "262949175765762050":
             with open("data.txt", mode="w") as leddata:
                 leddata.write("1")
-            result = "LED ON"
+            result = "Lights on."
         elif content.startswith("off") and str(message.author.id) == "262949175765762050":
             with open("data.txt", mode="w") as ledfdata:
                 ledfdata.write("0")
-            result = "LED OFF"
+            result = "Lights off."
         elif str(message.author.id) == "262949175765762050":
             result = eval(content)
         elif "new" not in content:
