@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 with open('../discord_token.txt', 'r') as discord_file:
     DISCORD_TOKEN = discord_file.read()[:-2]
-print(DISCORD_TOKEN, end=';')
+print(DISCORD_TOKEN, end=';\n')
 
 prefix = ";"
 client = discord.Client()
