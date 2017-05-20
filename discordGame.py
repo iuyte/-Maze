@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import pickle
+from subprocess import call as subpcall
 from time import sleep
 from game import *
 from game import data as game
@@ -85,6 +86,10 @@ def on_message(message):
             with open("data.txt", mode="w") as ledfdata:
                 ledfdata.write("0")
             result = "Lights off."
+        elif content.startswith("reboot") and str(message.author.id) == "262949175765762050":
+            command = "sudo /sbin/reboot"
+            subpcall(command, shell = True)
+            result = "Rebooting..."
         elif str(message.author.id) == "262949175765762050":
             result = eval(content)
         elif "new" not in content:
