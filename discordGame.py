@@ -3,6 +3,7 @@ import asyncio
 import pickle
 from subprocess import call as subpcall
 from time import sleep
+from time import gmtime, strftime
 from game import *
 from game import data as game
 from datetime import datetime, timedelta
@@ -22,7 +23,7 @@ def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------\n')
-    yield from client.send_message(client.get_channel("315552571823489024"), "Connected")
+    yield from client.send_message(client.get_channel("315552571823489024"), "Connected at " + strftime("%Y-%m-%d %H:%M:%S", gmtime()))
 
 @client.event
 @asyncio.coroutine
