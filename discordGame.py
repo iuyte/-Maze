@@ -39,6 +39,8 @@ def on_message(message):
             newc = content[7:].split(" ")
             content = "attack(" + message.author.id + ", '" + newc[0] + "', '" + newc[2] + "')"
             result = eval(content)
+        elif content.startswith("help"):
+            result = _help()
         elif content.startswith("use "):
             newc = content[4:]
             userr = getUserById(message.author.id)
