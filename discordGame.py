@@ -41,20 +41,20 @@ def on_message(message):
             result = eval(content)
         elif content.startswith("help"):
             result = \
-        """
-        ```
-        ; - the prefix to all commands
+"""
+```
+; - the prefix to all commands
 
-        newUser(<name>, <uid>) | create a new user of specified name and user ID
-        newItem(<name>, <Item>) | create a new item, as specified by the Item object passed
-        attack <user> with <item> | attack a player with an item you have
-        use <item> | use an Ability item's ability
-        user <user> [args] | Easier prefix to get a given user object and add items, etc
-        user <user> add(<itemName>) | Subset of the previous, add the specified item to the user
-        inventory [user] | Get a user's inventory, or, if the user isn't specified, your own
-        item <item> <attribute> | Find the given item, and return the specified attribute
-        ```
-        """
+newUser(<name>, <uid>) | create a new user of specified name and user ID
+newItem(<name>, <Item>) | create a new item, as specified by the Item object passed
+attack <user> with <item> | attack a player with an item you have
+use <item> | use an Ability item's ability
+user <user> [args] | Easier prefix to get a given user object and add items, etc
+user <user> add(<itemName>) | Subset of the previous, add the specified item to the user
+inventory [user] | Get a user's inventory, or, if the user isn't specified, your own
+item <item> <attribute> | Find the given item, and return the specified attribute
+```
+"""
         elif content.startswith("use "):
             newc = content[4:]
             userr = getUserById(message.author.id)
